@@ -3,6 +3,7 @@
 [![CI](https://github.com/qqhjw12/Enterprise-Copilot/actions/workflows/ci.yml/badge.svg)](https://github.com/qqhjw12/Enterprise-Copilot/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.11%20%7C%203.13-blue)](https://www.python.org/)
 [![Tests](https://img.shields.io/badge/tests-131%20passed-brightgreen)](tests/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![API key](https://img.shields.io/badge/API%20key-not%20required-orange)](#三快速启动)
 
 一个**企业级 AI Agent 平台底座**：把「平台治理层」与「Agent 运行时层」彻底拆开，
@@ -431,3 +432,19 @@ python -m runtime.rag.ingest --tenant demo --path data/knowledge --persist
 python -m runtime.rag.ingest --tenant demo --path data/knowledge --dry-run   # 先看会动什么
 python -m runtime.rag.ingest --tenant demo --path data/knowledge --prune     # 源文件删了就清索引
 ```
+
+---
+
+## 十、许可
+
+[MIT](LICENSE) © 2026 qqhjw12
+
+可以商用、修改、闭源分发，保留版权声明即可。没有附加条款，也不提供担保。
+
+两点提醒：
+
+- **演示凭据不是生产凭据。** `demo12345`、`dev-secret-change-me-please` 之类是为了让 `docker compose up`
+  开箱能跑。真上生产必须先换 `RUNTIME_JWT_SECRET`、走密钥管理、把本地账号换成企业 IdP。
+- **依赖各自有许可证。** `requirements.txt` 里的 langgraph / FastMCP / FastAPI 等按各自条款授权，
+  商用前请按贵司法务流程过一遍；本项目自身的 MIT 不覆盖它们。
+
