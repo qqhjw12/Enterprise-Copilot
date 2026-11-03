@@ -1,5 +1,10 @@
 # Enterprise Copilot
 
+[![CI](https://github.com/qqhjw12/Enterprise-Copilot/actions/workflows/ci.yml/badge.svg)](https://github.com/qqhjw12/Enterprise-Copilot/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.11%20%7C%203.13-blue)](https://www.python.org/)
+[![Tests](https://img.shields.io/badge/tests-131%20passed-brightgreen)](tests/)
+[![API key](https://img.shields.io/badge/API%20key-not%20required-orange)](#三快速启动)
+
 一个**企业级 AI Agent 平台底座**：把「平台治理层」与「Agent 运行时层」彻底拆开，
 运行时用 LangGraph 状态图编排（条件路由 / 工具循环 / HITL 中断 / 兜底降级），
 工具用 MCP 标准化接入内部系统，知识走 Dense + BM25 + RRF + Rerank 的混合检索，
