@@ -1,0 +1,20 @@
+# 统一换行，避免 Windows 检出 CRLF 后与 CI（Linux）产生整文件 diff
+* text=auto eol=lf
+
+*.py     text eol=lf
+*.md     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.toml   text eol=lf
+*.json   text eol=lf
+*.sh     text eol=lf
+
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.pdf    binary
+*.ico    binary

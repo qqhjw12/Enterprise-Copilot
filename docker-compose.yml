@@ -1,0 +1,140 @@
+name: enterprise-copilot
+
+x-common-env: &common-env
+  APP_ENV: ${APP_ENV:-dev}
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+services:
+  # ---------------------------------------------------------------- 基础设施
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: copilot
+      POSTGRES_PASSWORD: copilot
+      POSTGRES_DB: copilot
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U copilot -d copilot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports: ["6379:6379"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Qdrant 为可选项：RAG_VECTOR_BACKEND=memory 时无需启动
+  qdrant:
+    image: qdrant/qdrant:v1.9.2
+    profiles: ["vector"]
+    ports: ["6333:6333"]
+    volumes:
+      - qdrantdata:/qdrant/storage
+
+  # ---------------------------------------------------------------- 控制面
+  platform-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.platform
+    <<: *common-env
+    environment:
+      PLATFORM_DATABASE_URL: postgresql+asyncpg://copilot:copilot@postgres:5432/copilot
+      PLATFORM_JWT_SECRET: ${PLATFORM_JWT_SECRET:-dev-secret-change-me-please}
+      PLATFORM_BOOTSTRAP_ADMIN_EMAIL: ${PLATFORM_BOOTSTRAP_ADMIN_EMAIL:-admin@corp.local}
+      PLATFORM_BOOTSTRAP_ADMIN_PASSWORD: ${PLATFORM_BOOTSTRAP_ADMIN_PASSWORD:-Copilot@2026}
+      PLATFORM_CORS_ORIGINS: ${PLATFORM_CORS_ORIGINS:-http://localhost:8501}
+    ports: ["8000:8000"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # ---------------------------------------------------------------- MCP 工具层
+  mcp-ops:
+    build:
+      context: .
+      dockerfile: Dockerfile.runtime
+    <<: *common-env
+    command: ["python", "-m", "runtime.mcp_layer.server", "--transport", "http", "--host", "0.0.0.0", "--port", "8765"]
+    ports: ["8765:8765"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8765/healthz')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  # ---------------------------------------------------------------- 执行面
+  runtime-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.runtime
+    <<: *common-env
+    environment:
+      RUNTIME_REDIS_URL: redis://redis:6379/0
+      RUNTIME_CHECKPOINT_BACKEND: postgres
+      RUNTIME_CHECKPOINT_DSN: postgresql://copilot:copilot@postgres:5432/copilot
+      RUNTIME_JWT_SECRET: ${PLATFORM_JWT_SECRET:-dev-secret-change-me-please}
+      RUNTIME_PLATFORM_BASE_URL: http://platform-api:8000
+      RUNTIME_LLM_BASE_URL: ${RUNTIME_LLM_BASE_URL:-https://api.deepseek.com/v1}
+      RUNTIME_LLM_API_KEY: ${RUNTIME_LLM_API_KEY:-}
+      RUNTIME_LLM_MODEL: ${RUNTIME_LLM_MODEL:-deepseek-chat}
+      RUNTIME_RUN_BUDGET_USD: ${RUNTIME_RUN_BUDGET_USD:-0.05}
+      MCP_OPS_URL: http://mcp-ops:8765/mcp
+      RAG_VECTOR_BACKEND: ${RAG_VECTOR_BACKEND:-memory}
+      RAG_QDRANT_URL: http://qdrant:6333
+      RAG_EMBEDDING_PROVIDER: ${RAG_EMBEDDING_PROVIDER:-hashing}
+      RAG_RERANKER: ${RAG_RERANKER:-heuristic}
+      RAG_QUERY_TRANSFORM: ${RAG_QUERY_TRANSFORM:-multi_query}
+      LANGCHAIN_TRACING_V2: ${LANGCHAIN_TRACING_V2:-false}
+      LANGCHAIN_API_KEY: ${LANGCHAIN_API_KEY:-}
+      LANGCHAIN_PROJECT: ${LANGCHAIN_PROJECT:-enterprise-copilot}
+    ports: ["8001:8001"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mcp-ops:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # ---------------------------------------------------------------- 工作台
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.runtime
+    <<: *common-env
+    command: ["streamlit", "run", "web/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    environment:
+      COPILOT_API_BASE: http://runtime-service:8001
+      COPILOT_PLATFORM_BASE: http://platform-api:8000
+    ports: ["8501:8501"]
+    depends_on:
+      runtime-service:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  redisdata:
+  qdrantdata:

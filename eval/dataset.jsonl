@@ -1,0 +1,50 @@
+{"id": "q01", "query": "年假有几天", "expected": "hr-leave-policy", "roles": "employee", "style": "keyword"}
+{"id": "q02", "query": "病假需要提供什么证明", "expected": "hr-leave-policy", "roles": "employee", "style": "keyword"}
+{"id": "q03", "query": "事假全年最多能请多少天", "expected": "hr-leave-policy", "roles": "employee", "style": "keyword"}
+{"id": "q04", "query": "加班调休多久内必须用完", "expected": "hr-leave-policy", "roles": "employee", "style": "keyword"}
+{"id": "q05", "query": "请假超过三天需要谁审批", "expected": "hr-leave-policy", "roles": "employee", "style": "keyword"}
+{"id": "q06", "query": "当年没休完的年假怎么处理", "expected": "hr-leave-policy", "roles": "employee", "style": "keyword"}
+{"id": "q07", "query": "紧急情况可以先口头报备事后补单吗", "expected": "hr-leave-policy", "roles": "employee", "style": "keyword"}
+{"id": "q08", "query": "我今年刚入职，年假按多少天算", "expected": "hr-leave-policy", "roles": "employee", "style": "paraphrase"}
+{"id": "q09", "query": "补充医疗保险的年度报销上限是多少", "expected": "hr-compensation-confidential", "roles": "hr", "style": "keyword"}
+{"id": "q10", "query": "年度体检的套餐标准", "expected": "hr-compensation-confidential", "roles": "hr", "style": "keyword"}
+{"id": "q11", "query": "绩效奖金占薪酬的比例", "expected": "hr-compensation-confidential", "roles": "hr", "style": "keyword"}
+{"id": "q12", "query": "公司一般什么时候统一涨工资", "expected": "hr-compensation-confidential", "roles": "hr", "style": "paraphrase"}
+{"id": "q13", "query": "补充医疗可以给配偶和孩子加保吗", "expected": "hr-compensation-confidential", "roles": "hr", "style": "keyword"}
+{"id": "q14", "query": "远程办公用的 VPN 客户端是什么", "expected": "it-account-vpn", "roles": "employee", "style": "keyword"}
+{"id": "q15", "query": "VPN 认证需要双因子吗", "expected": "it-account-vpn", "roles": "employee", "style": "keyword"}
+{"id": "q16", "query": "域账号密码长度要求", "expected": "it-account-vpn", "roles": "employee", "style": "keyword"}
+{"id": "q17", "query": "密码用久了会被强制要求换吗", "expected": "it-account-vpn", "roles": "employee", "style": "paraphrase"}
+{"id": "q18", "query": "新员工的系统账号由谁开通", "expected": "it-account-vpn", "roles": "employee", "style": "keyword"}
+{"id": "q19", "query": "领用电脑需要登记什么", "expected": "it-account-vpn", "roles": "employee", "style": "keyword"}
+{"id": "q20", "query": "用自己的笔记本连公司内网行不行", "expected": "it-account-vpn", "roles": "employee", "style": "paraphrase"}
+{"id": "q21", "query": "多少钱以上的物品算固定资产", "expected": "it-asset-policy", "roles": "employee", "style": "keyword"}
+{"id": "q22", "query": "显示器多久可以申请更换一次", "expected": "it-asset-policy", "roles": "employee", "style": "keyword"}
+{"id": "q23", "query": "每年什么时候做资产盘点", "expected": "it-asset-policy", "roles": "employee", "style": "keyword"}
+{"id": "q24", "query": "硬件报修的 SLA 是多久", "expected": "it-asset-policy", "roles": "employee", "style": "keyword"}
+{"id": "q25", "query": "走人的时候设备没还上会怎样", "expected": "it-asset-policy", "roles": "employee", "style": "paraphrase"}
+{"id": "q26", "query": "设备报废由谁执行", "expected": "it-asset-policy", "roles": "employee", "style": "keyword"}
+{"id": "q27", "query": "一线城市出差住宿上限多少", "expected": "finance-reimbursement", "roles": "employee", "style": "keyword"}
+{"id": "q28", "query": "高职级可以坐商务座吗", "expected": "finance-reimbursement", "roles": "employee", "style": "keyword"}
+{"id": "q29", "query": "出差吃饭一天补多少钱", "expected": "finance-reimbursement", "roles": "employee", "style": "paraphrase"}
+{"id": "q30", "query": "费用发生后多久内要报销", "expected": "finance-reimbursement", "roles": "employee", "style": "keyword"}
+{"id": "q31", "query": "自己开车出差油费怎么报", "expected": "finance-reimbursement", "roles": "employee", "style": "paraphrase"}
+{"id": "q32", "query": "跨省出差需要谁审批", "expected": "finance-reimbursement", "roles": "employee", "style": "keyword"}
+{"id": "q33", "query": "住宿标准超标了怎么处理", "expected": "finance-reimbursement", "roles": "employee", "style": "keyword"}
+{"id": "q34", "query": "单笔五十万以上的采购需要什么流程", "expected": "finance-procurement", "roles": "employee", "style": "keyword"}
+{"id": "q35", "query": "新供应商准入要提供哪些材料", "expected": "finance-procurement", "roles": "employee", "style": "keyword"}
+{"id": "q36", "query": "合同用印怎么申请", "expected": "finance-procurement", "roles": "employee", "style": "keyword"}
+{"id": "q37", "query": "预付款比例有什么上限", "expected": "finance-procurement", "roles": "employee", "style": "keyword"}
+{"id": "q38", "query": "尾款留存比例是多少", "expected": "finance-procurement", "roles": "employee", "style": "keyword"}
+{"id": "q39", "query": "P1 工单多久必须响应", "expected": "ops-ticket-sla", "roles": "employee", "style": "keyword"}
+{"id": "q40", "query": "P2 工单的恢复时间是多久", "expected": "ops-ticket-sla", "roles": "employee", "style": "keyword"}
+{"id": "q41", "query": "工单状态是怎么流转的", "expected": "ops-ticket-sla", "roles": "employee", "style": "keyword"}
+{"id": "q42", "query": "报障的正式提交渠道有哪些", "expected": "ops-ticket-sla", "roles": "employee", "style": "keyword"}
+{"id": "q43", "query": "工单超时没人管会捅到谁那里", "expected": "ops-ticket-sla", "roles": "employee", "style": "paraphrase"}
+{"id": "q44", "query": "SLA 达成率低于多少要提交改进计划", "expected": "ops-ticket-sla", "roles": "employee", "style": "keyword"}
+{"id": "q45", "query": "公司数据分为几个等级", "expected": "security-data-classification", "roles": "employee", "style": "keyword"}
+{"id": "q46", "query": "客户合同这类数据能不能发到个人邮箱", "expected": "security-data-classification", "roles": "employee", "style": "keyword"}
+{"id": "q47", "query": "能把合同内容粘到 ChatGPT 里问吗", "expected": "security-data-classification", "roles": "employee", "style": "paraphrase"}
+{"id": "q48", "query": "办公电脑的 USB 存储设备能用吗", "expected": "security-data-classification", "roles": "employee", "style": "keyword"}
+{"id": "q49", "query": "发现公司数据泄露找谁、多快说", "expected": "security-data-classification", "roles": "employee", "style": "paraphrase"}
+{"id": "q50", "query": "办公电脑的磁盘加密有什么要求", "expected": "security-data-classification", "roles": "employee", "style": "keyword"}

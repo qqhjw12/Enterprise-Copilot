@@ -1,0 +1,543 @@
+{
+  "contract_version": "2026-11-03",
+  "protocol": "mcp",
+  "server": "internal-ops",
+  "spec": "2025-06-18",
+  "tools": [
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "description": "创建 IT 工单。将在 IT 服务台创建工单并按优先级排期",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "default": "",
+            "maxLength": 2000,
+            "title": "Description",
+            "type": "string"
+          },
+          "idempotency_key": {
+            "default": "",
+            "maxLength": 64,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "priority": {
+            "default": "P3",
+            "enum": [
+              "P1",
+              "P2",
+              "P3",
+              "P4"
+            ],
+            "title": "Priority",
+            "type": "string"
+          },
+          "requester_id": {
+            "default": "",
+            "maxLength": 32,
+            "title": "Requester Id",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 120,
+            "minLength": 4,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "title": "CreateTicketInput",
+        "type": "object"
+      },
+      "name": "create_ticket",
+      "output_schema": {
+        "$defs": {
+          "OpsError": {
+            "properties": {
+              "code": {
+                "title": "Code",
+                "type": "string"
+              },
+              "details": {
+                "additionalProperties": true,
+                "title": "Details",
+                "type": "object"
+              },
+              "message": {
+                "title": "Message",
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "OpsError",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "data": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Data"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/OpsError"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ],
+        "title": "OpsResult",
+        "type": "object"
+      },
+      "schema_hash": "b33b672abdb6444f",
+      "scope": "ops:ticket:write",
+      "title": "创建 IT 工单",
+      "write": true
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "查询员工资产。读取员工名下固定资产清单",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "employee_id": {
+            "description": "员工工号，如 E1024",
+            "maxLength": 32,
+            "minLength": 2,
+            "title": "Employee Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "employee_id"
+        ],
+        "title": "GetEmployeeAssetsInput",
+        "type": "object"
+      },
+      "name": "get_employee_assets",
+      "output_schema": {
+        "$defs": {
+          "OpsError": {
+            "properties": {
+              "code": {
+                "title": "Code",
+                "type": "string"
+              },
+              "details": {
+                "additionalProperties": true,
+                "title": "Details",
+                "type": "object"
+              },
+              "message": {
+                "title": "Message",
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "OpsError",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "data": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Data"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/OpsError"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ],
+        "title": "OpsResult",
+        "type": "object"
+      },
+      "schema_hash": "2c7ff667492e3a5e",
+      "scope": "ops:asset:read",
+      "title": "查询员工资产",
+      "write": false
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "查询工单状态。读取 IT 工单的处理进度与 SLA",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "ticket_id": {
+            "description": "工单号，如 T-2026-0042",
+            "maxLength": 32,
+            "minLength": 3,
+            "title": "Ticket Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ticket_id"
+        ],
+        "title": "QueryTicketStatusInput",
+        "type": "object"
+      },
+      "name": "query_ticket_status",
+      "output_schema": {
+        "$defs": {
+          "OpsError": {
+            "properties": {
+              "code": {
+                "title": "Code",
+                "type": "string"
+              },
+              "details": {
+                "additionalProperties": true,
+                "title": "Details",
+                "type": "object"
+              },
+              "message": {
+                "title": "Message",
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "OpsError",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "data": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Data"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/OpsError"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ],
+        "title": "OpsResult",
+        "type": "object"
+      },
+      "schema_hash": "7ee48bbd4d0cd1f7",
+      "scope": "ops:ticket:read",
+      "title": "查询工单状态",
+      "write": false
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "检索通讯录。按姓名/部门检索内部通讯录（仅返回公开字段）",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "description": "姓名 / 部门 / 邮箱关键字",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Keyword",
+            "type": "string"
+          },
+          "limit": {
+            "default": 5,
+            "maximum": 20,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "keyword"
+        ],
+        "title": "SearchDirectoryInput",
+        "type": "object"
+      },
+      "name": "search_directory",
+      "output_schema": {
+        "$defs": {
+          "OpsError": {
+            "properties": {
+              "code": {
+                "title": "Code",
+                "type": "string"
+              },
+              "details": {
+                "additionalProperties": true,
+                "title": "Details",
+                "type": "object"
+              },
+              "message": {
+                "title": "Message",
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "OpsError",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "data": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Data"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/OpsError"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ],
+        "title": "OpsResult",
+        "type": "object"
+      },
+      "schema_hash": "1a1682b69f2d3107",
+      "scope": "ops:directory:read",
+      "title": "检索通讯录",
+      "write": false
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "description": "提交请假申请。将代表你在 OA 中正式发起请假流程，提交后需走审批",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "employee_id": {
+            "maxLength": 32,
+            "minLength": 2,
+            "title": "Employee Id",
+            "type": "string"
+          },
+          "end_date": {
+            "format": "date",
+            "title": "End Date",
+            "type": "string"
+          },
+          "idempotency_key": {
+            "default": "",
+            "description": "重试时的幂等键，避免重复提交",
+            "maxLength": 64,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "leave_type": {
+            "enum": [
+              "annual",
+              "sick",
+              "personal",
+              "compensatory"
+            ],
+            "title": "Leave Type",
+            "type": "string"
+          },
+          "reason": {
+            "default": "",
+            "maxLength": 500,
+            "title": "Reason",
+            "type": "string"
+          },
+          "start_date": {
+            "format": "date",
+            "title": "Start Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "employee_id",
+          "leave_type",
+          "start_date",
+          "end_date"
+        ],
+        "title": "SubmitLeaveRequestInput",
+        "type": "object"
+      },
+      "name": "submit_leave_request",
+      "output_schema": {
+        "$defs": {
+          "OpsError": {
+            "properties": {
+              "code": {
+                "title": "Code",
+                "type": "string"
+              },
+              "details": {
+                "additionalProperties": true,
+                "title": "Details",
+                "type": "object"
+              },
+              "message": {
+                "title": "Message",
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "title": "OpsError",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "data": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Data"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/OpsError"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ],
+        "title": "OpsResult",
+        "type": "object"
+      },
+      "schema_hash": "e7e26d44291c26b3",
+      "scope": "ops:leave:write",
+      "title": "提交请假申请",
+      "write": true
+    }
+  ]
+}

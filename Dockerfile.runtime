@@ -1,0 +1,27 @@
+FROM python:3.11-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY runtime ./runtime
+COPY platform_api ./platform_api
+COPY common ./common
+COPY web ./web
+COPY eval ./eval
+COPY data ./data
+
+RUN useradd -m -u 10001 copilot && chown -R copilot:copilot /app
+USER copilot
+
+EXPOSE 8001 8765
+CMD ["uvicorn", "runtime.main:app", "--host", "0.0.0.0", "--port", "8001"]

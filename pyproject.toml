@@ -1,0 +1,20 @@
+[project]
+name = "enterprise-copilot"
+version = "0.1.0"
+description = "Enterprise Copilot — 企业级 AI Agent 平台底座（控制面 / 执行面分离）"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-q --strict-markers"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+# B008：FastAPI 的 Depends(...) 必须写在默认参数里，这是框架约定而非缺陷
+ignore = ["E501", "B008"]
